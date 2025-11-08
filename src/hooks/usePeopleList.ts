@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPeople } from "@/queries/queries";
 
@@ -22,30 +22,32 @@ export function usePeopleList(
     },
   });
 
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
+  );
+
   useEffect(() => {
-    if (!loadMoreRef.current) return;
+    const { current: currentRef } = loadMoreRef;
+    if (!currentRef) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          console.log("Fetching next page...");
-          fetchNextPage();
-        }
-      },
-      {
-        root: null,
-        rootMargin: "50px",
-      },
-    );
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      threshold: 0.5,
+    });
 
-    observer.observe(loadMoreRef.current);
+    observer.observe(currentRef);
 
     return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
-  }, [loadMoreRef, fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [loadMoreRef, observerCallback]);
 
   return {
     data,

@@ -1,16 +1,18 @@
 import { useRef } from "react";
-import { usePeopleList } from "@/hooks/hooks";
+import { usePeopleList } from "@/hooks/usePeopleList";
+import { Link } from "react-router";
 
 export default function PeopleList() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const { data } = usePeopleList(loadMoreRef);
 
   return (
-    <div className="p-6 grid gap-8 grid-cols-2 md:grid-cols-2">
+    <div className="p-6 grid gap-8 grid-cols-2 md:grid-cols-3">
       {data?.pages.flatMap((page) =>
         page.results.map((person) => (
-          <button
+          <Link
             key={person.id}
+            to={`/person/${person.id}`}
             className="p-4 bg-white border border-gray-700 text-black rounded-lg hover:bg-gray-300 cursor-pointer"
             // onClick={() => onSelect(hero.id)}
           >
@@ -22,7 +24,7 @@ export default function PeopleList() {
             <p className="text-base">Hair color: {person.hair_color}</p>
             <p className="text-base">Eyes color: {person.eye_color}</p>
             <p className="text-base">Skin color: {person.skin_color}</p>
-          </button>
+          </Link>
         )),
       )}
       <div className="target" ref={loadMoreRef}></div>
