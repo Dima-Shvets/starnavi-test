@@ -37,7 +37,7 @@ export function usePeopleList(
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
-      threshold: 0.5,
+      threshold: 1,
     });
 
     observer.observe(currentRef);

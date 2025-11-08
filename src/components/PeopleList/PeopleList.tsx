@@ -1,33 +1,39 @@
 import { useRef } from "react";
 import { usePeopleList } from "@/hooks/usePeopleList";
-import { Link } from "react-router";
+import PersonCard from "@/components/PersonCard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PeopleList() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const { data } = usePeopleList(loadMoreRef);
+  const { data, isFetching, error } = usePeopleList(loadMoreRef);
 
   return (
-    <div className="p-6 grid gap-8 grid-cols-2 md:grid-cols-3">
-      {data?.pages.flatMap((page) =>
-        page.results.map((person) => (
-          <Link
-            key={person.id}
-            to={`/person/${person.id}`}
-            className="p-4 bg-white border border-gray-700 text-black rounded-lg hover:bg-gray-300 cursor-pointer"
-            // onClick={() => onSelect(hero.id)}
-          >
-            <h3 className="font-bold">{person.name}</h3>
-            <p className="text-base">Gender: {person.gender}</p>
-            <p className="text-base">Birth year: {person.birth_year}</p>
-            <p className="text-base">Height: {person.height} cm</p>
-            <p className="text-base">Mass: {person.mass} kg</p>
-            <p className="text-base">Hair color: {person.hair_color}</p>
-            <p className="text-base">Eyes color: {person.eye_color}</p>
-            <p className="text-base">Skin color: {person.skin_color}</p>
-          </Link>
-        )),
-      )}
+    <>
+      <h1 className="page-title mb-6">List of Star Wars Heroes</h1>
+      <ul className="grid gap-8 grid-cols-2 md:grid-cols-3">
+        {error && <div className="text-red">{error.message}</div>}
+        {data?.pages.flatMap((page) =>
+          page.results.map((person) => (
+            <li key={person.id}>
+              <PersonCard person={person} />
+            </li>
+          )),
+        )}
+        {isFetching && <PeopleListSkeleton />}
+      </ul>
       <div className="target" ref={loadMoreRef}></div>
-    </div>
+    </>
   );
 }
+
+const PeopleListSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <li key={index}>
+          <Skeleton className="w-full h-[242px]" />
+        </li>
+      ))}
+    </>
+  );
+};
