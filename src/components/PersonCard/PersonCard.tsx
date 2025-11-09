@@ -6,7 +6,7 @@ export default function PersonCard(props: { person: Person }) {
   const { person } = props;
   return (
     <Card className="w-full">
-      <Link to={`/person/${person.id}`} state={{ personName: person.name }}>
+      <Link to={`/person/${person.id}`}>
         <CardHeader>
           <CardTitle>{person.name}</CardTitle>
         </CardHeader>

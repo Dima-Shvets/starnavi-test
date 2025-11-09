@@ -20,17 +20,17 @@ export const createRootNode = (
  * @returns Array of Node objects representing films
  */
 export const createFilmNodes = (
-    films: Film[],
-    options?: { startY?: number; xDistance?: number },
+  films: Film[],
+  options?: { startY?: number; xDistance?: number },
 ): Node[] =>
-    films.map((film, index) => ({
-        id: film.id.toString(),
-        data: { label: film.title },
-        position: {
-            x: 50 + index * (options?.xDistance || 200),
-            y: options?.startY || 150,
-        },
-    }));
+  films.map((film, index) => ({
+    id: film.id.toString(),
+    data: { label: film.title },
+    position: {
+      x: 50 + index * (options?.xDistance || 200),
+      y: options?.startY || 150,
+    },
+  }));
 
 export const createStarshipNodes = (
   starships: Starship[],
@@ -50,7 +50,6 @@ export const createFilmEdges = (rootId: string, films: Film[]): Edge[] =>
     id: `edge-${rootId}-${film.id}`,
     source: rootId,
     target: film.id.toString(),
-    animated: true,
   }));
 
 export const createFilmToShipEdges = (

@@ -25,9 +25,11 @@ export type Film = {
   director: string;
   producer: string;
   release_date: string;
+  opening_crawl: string;
   characters: number[];
   planets: number[];
   starships: number[];
+  species: number[];
   vehicles: number[];
   url: string;
   created: string;
@@ -47,6 +49,7 @@ export type Starship = {
   cargo_capacity: string;
   consumables: string;
   hyperdrive_rating: string;
+  max_atmosphering_speed: string;
   MGLT: string;
   films: number[];
   pilots: number[];

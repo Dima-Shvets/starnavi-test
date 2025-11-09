@@ -12,6 +12,7 @@ import {
 } from "@/utils/graph";
 
 type GraphData = {
+  personName: string;
   nodes: Node[];
   edges: Edge[];
   isLoading: boolean;
@@ -46,7 +47,8 @@ export function usePersonGraph(): GraphData {
   });
 
   return useMemo((): GraphData => {
-    if (!person) return { nodes: [], edges: [], isLoading: false };
+    if (!person)
+      return { personName: "", nodes: [], edges: [], isLoading: false };
 
     const rootId = person.id.toString();
     // Filter out only successful queries
@@ -72,6 +74,7 @@ export function usePersonGraph(): GraphData {
     const error = errors.length ? errors[0]?.toString() : null;
 
     return {
+      personName: person.name,
       nodes: [rootNode, ...filmNodes, ...starshipNodes],
       edges: [...filmEdges, ...filmToShipEdges],
       isLoading,
