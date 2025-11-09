@@ -1,5 +1,4 @@
 import type { Person, Film, Starship } from "@/types/types";
-import { PEOPLE_ENDPOINT } from "@/consts/api";
 
 export const mockPeople: Person[] = [
   {
