@@ -9,7 +9,7 @@ export default function PersonGraph() {
 
   return (
     <>
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-6 flex-wrap">
         <BackButton />
         <h1 className="page-title">{`Films and Starships Graph of ${personName}`}</h1>
       </div>

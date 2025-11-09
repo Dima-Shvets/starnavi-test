@@ -10,7 +10,7 @@ export default function PeopleList() {
   return (
     <>
       <h1 className="page-title mb-6">List of Star Wars Heroes</h1>
-      <ul className="grid gap-8 grid-cols-2 md:grid-cols-3">
+      <ul className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {error && <div className="text-red">{error.message}</div>}
         {data?.pages.flatMap((page) =>
           page.results.map((person) => (
