@@ -11,14 +11,6 @@ export const createRootNode = (
   type: "default",
 });
 
-/**
- * Creates an array of nodes representing films
- * @param films - Array of Film objects to create nodes from
- * @param options - Optional configuration object
- * @param options.startY - Starting Y coordinate for the nodes (defaults to 150)
- * @param options.xDistance - Horizontal distance between nodes (defaults to 200)
- * @returns Array of Node objects representing films
- */
 export const createFilmNodes = (
   films: Film[],
   options?: { startY?: number; xDistance?: number },
@@ -56,16 +48,23 @@ export const createFilmToShipEdges = (
   films: Film[],
   starships: Starship[],
 ): Edge[] => {
+  // Create a set of all starship IDs for quick lookup
   const starshipIds = new Set(starships.map((starship) => starship.id));
 
+  // For each film, create edges to starships that exist in the starships array
   return films.flatMap((film) => {
     const filmNodeId = film.id.toString();
-    return film.starships
-      .filter((filmStarshipId) => starshipIds.has(filmStarshipId))
-      .map((filmStarshipId) => ({
-        id: `edge-${filmNodeId}-${filmStarshipId}`,
-        source: filmNodeId,
-        target: filmStarshipId.toString(),
-      }));
+
+    // Filter the film's starships to only those present in the starshipIds set
+    return (
+      film.starships
+        .filter((filmStarshipId) => starshipIds.has(filmStarshipId))
+        // For each matching starship, create an edge from the film to the starship
+        .map((filmStarshipId) => ({
+          id: `edge-${filmNodeId}-${filmStarshipId}`,
+          source: filmNodeId,
+          target: filmStarshipId.toString(),
+        }))
+    );
   });
 };
